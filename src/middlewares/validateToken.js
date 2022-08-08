@@ -6,7 +6,7 @@ export default async function validateToken(req, res, next) {
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
     if (!token) {
-        return res.send(401).status("Não enviou token.");
+        return res.status(401).send("Não enviou token.");
     }
 
     try {
@@ -15,7 +15,7 @@ export default async function validateToken(req, res, next) {
         );
         const [session] = sessions;
         if (!session) {
-            return res.send(401).send("Não existe sessão.");
+            return res.status(401).send("Não existe sessão.");
         }
 
         const { rows: users } = await userRepository.getUserById(
@@ -23,7 +23,7 @@ export default async function validateToken(req, res, next) {
         );
         const [user] = users;
         if (!user) {
-            return res.send(401).send("Usuário não encontrado");
+            return res.status(401).send("Usuário não encontrado");
         }
 
         res.locals.user = user;
