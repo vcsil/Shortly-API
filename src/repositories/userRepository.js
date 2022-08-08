@@ -16,9 +16,14 @@ async function createUser(name, email, password) {
     );
 }
 
+async function getUserById(id) {
+    return connection.query(`SELECT * FROM users WHERE id = $1;`, [id]);
+}
+
 const userRepository = {
     getUserByEmail,
     createUser,
+    getUserById,
 };
 
 export default userRepository;
