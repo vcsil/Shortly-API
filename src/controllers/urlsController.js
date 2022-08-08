@@ -34,3 +34,26 @@ export async function getURLById(req, res) {
         return res.sendStatus(500);
     }
 }
+
+export async function deleteURL(req, res) {
+    const { id } = req.params;
+    const { user } = req.locals;
+
+    try {
+        const urlExiste = await urlRepository.getURLById(id);
+        if (urlExiste.rowCount === 0) {
+            return res.sendStatus(404);
+        }
+        const { rows: url } = urlExiste;
+        if (url.userId !== user.id) {
+            return res.sendStatus(401);
+        }
+
+        await urlRepository.deleteURL(id);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.error(err);
+        return res.sendStatus(500);
+    }
+}
