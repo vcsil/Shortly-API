@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
 import urlRepository from "../repositories/urlsRepository.js";
 import userRepository from "../repositories/userRepository.js";
 
@@ -5,8 +7,8 @@ export async function getUserById(req, res) {
     const { id } = req.params;
     const { user } = res.locals;
 
-    if (id !== user.id) {
-        return res.sendStatus(401);
+    if (parseInt(id, 10) !== parseInt(user.id, 10)) {
+        return res.status(401).send("Inválido");
     }
 
     try {
@@ -15,6 +17,10 @@ export async function getUserById(req, res) {
 
         const urlsResult = await urlRepository.getURLSByUser(id);
         const userUrls = urlsResult.rows;
+        userUrls.map((obj) => {
+            delete obj.userId;
+            delete obj.createdAt;
+        });
 
         return res
             .send({
