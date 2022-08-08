@@ -31,7 +31,7 @@ async function addURLVisitCount(urlId) {
 
 async function getVisitCountByUser(userId) {
     return connection.query(
-        `SELECT SUM(urls."visitCount") FROM urls WHERE urls."userId = $1`,
+        `SELECT SUM(urls."visitCount") FROM urls WHERE urls."userId" = $1`,
         [userId]
     );
 }
