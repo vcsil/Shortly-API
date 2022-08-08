@@ -3,6 +3,7 @@ import {
     shortenURL,
     getURLById,
     deleteURL,
+    openShortUrl,
 } from "../controllers/urlsController.js";
 
 import validateSchema from "../middlewares/schemaValidator.js";
@@ -18,6 +19,7 @@ urlsRouter.post(
     shortenURL
 );
 urlsRouter.get("/urls/:id", getURLById);
+urlsRouter.get("/urls/open/:shortUrl", openShortUrl);
 urlsRouter.delete("/urls/:id", validateToken, deleteURL);
 
 export default urlsRouter;

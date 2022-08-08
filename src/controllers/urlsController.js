@@ -35,12 +35,34 @@ export async function getURLById(req, res) {
     }
 }
 
+export async function openShortUrl(req, res) {
+    const { shortUrl } = req.params;
+
+    try {
+        const result = await urlRepository.getByShortURL(shortUrl)
+        if (result.rowCount === 0) {
+            return res.sendStatus(404);
+        }
+        const [url] = result.rows;
+        await urlRepository.addURLVisitCount(url.id);
+        
+        res.redirect(url.url)
+
+    } catch (err) {
+        console.log(err);
+        return res.sendStatus(500);
+    }
+}
+
 export async function deleteURL(req, res) {
     const { id } = req.params;
     const { user } = req.locals;
 
     try {
-        const urlExiste = await urlRepository.getURLById(id);
+        const urlExiste = await .getByShortURL(shortUrl)
+        if (result.rowCount === 0) {
+            return res.sendStatus(404);
+        }.getURLById(id);
         if (urlExiste.rowCount === 0) {
             return res.sendStatus(404);
         }
